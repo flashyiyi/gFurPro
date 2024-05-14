@@ -610,6 +610,22 @@ IMPLEMENT_VERTEX_FACTORY_TYPE(FFurSkinVertexFactory, "/Plugin/gFur/Private/GFurF
 	| EVertexFactoryFlags::SupportsDynamicLighting
 	| EVertexFactoryFlags::SupportsPrecisePrevWorldPos);
 
+// Fix from gloriousayu
+#if ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION >= 4
+
+enum
+{
+	// 256 works for real uniform buffers, emulated UB can support up to 75 
+	MAX_GPU_BONE_MATRICES_UNIFORMBUFFER = 256,
+};
+
+BEGIN_GLOBAL_SHADER_PARAMETER_STRUCT(FBoneMatricesUniformShaderParameters, )
+	SHADER_PARAMETER_ARRAY(FMatrix3x4, BoneMatrices, [MAX_GPU_BONE_MATRICES_UNIFORMBUFFER])
+END_GLOBAL_SHADER_PARAMETER_STRUCT()
+
+#endif
+// End of fix from gloriousayu
+
 #if WITH_EDITORONLY_DATA
 IMPLEMENT_GLOBAL_SHADER_PARAMETER_STRUCT(FBoneMatricesUniformShaderParameters, "BonesFur");
 #endif // WITH_EDITORONLY_DATA
