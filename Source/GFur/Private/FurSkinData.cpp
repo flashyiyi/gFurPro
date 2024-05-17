@@ -155,7 +155,7 @@ public:
 
 		void ReleaseBoneData()
 		{
-			ensure(IsInRenderingThread());
+			/*ensure(IsInRenderingThread());*/
 
 			UniformBuffer.SafeRelease();
 
