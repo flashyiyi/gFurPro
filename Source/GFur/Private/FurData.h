@@ -131,9 +131,9 @@ public:
 	static const int32 MaximalFurLayerCount;
 	static const float MinimalFurLength;
 
-	const TArray<FSection>& GetSections_RenderThread() const { check(IsInRenderingThread()); return Sections; }
-	int32 GetNumVertices_RenderThread() const { check(IsInRenderingThread()); return VertexCount; }
-	const FIndexBuffer* GetIndexBuffer_RenderThread() const { check(IsInRenderingThread()); return &IndexBuffer; }
+	const TArray<FSection>& GetSections_RenderThread() const { /*check(IsInRenderingThread());*/ return Sections; }
+	int32 GetNumVertices_RenderThread() const { /*check(IsInRenderingThread());*/ return VertexCount; }
+	const FIndexBuffer* GetIndexBuffer_RenderThread() const { /*check(IsInRenderingThread());*/ return &IndexBuffer; }
 	int32 GetLod() const { return Lod; }
 	float GetCurrentMinFurLength() const { return CurrentMinFurLength; }
 	float GetCurrentMaxFurLength() const { return CurrentMaxFurLength; }

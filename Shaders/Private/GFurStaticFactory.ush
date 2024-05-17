@@ -284,14 +284,14 @@ float4 VertexFactoryGetWorldPosition(FPositionOnlyVertexFactoryInput Input)
 // @return previous translated world position
 float4 VertexFactoryGetPreviousWorldPosition(FVertexFactoryInput Input, FVertexFactoryIntermediates Intermediates)
 {
-	FLWCMatrix PreviousLocalToWorld = GetInstanceData(Intermediates).PrevLocalToWorld;
-	float4x4 PreviousLocalToWorldTranslated = LWCMultiplyTranslation(PreviousLocalToWorld, ResolvedView.PrevPreViewTranslation);
+	FDFMatrix PreviousLocalToWorld = GetInstanceData(Intermediates).PrevLocalToWorld;
+	float4x4 PreviousLocalToWorldTranslated = DFFastToTranslatedWorld(PreviousLocalToWorld, ResolvedView.PrevPreViewTranslation);
 
-	float4 Position = LWCToFloat(mul(Input.Position, PreviousLocalToWorldTranslated));
+	float4 Position = DFDemote(mul(Input.Position, PreviousLocalToWorldTranslated));
 	
 #if NUM_MATERIAL_TEXCOORDS_VERTEX >= 2
 
-	float4x4 m = LWCToFloat(PreviousLocalToWorld);
+	float4x4 m = DFDemote(PreviousLocalToWorld);
 	float3x3 LocalToWorld = float3x3(m[0].xyz, m[1].xyz, m[2].xyz);
 
 	float3 FurOffset = mul(Input.FurOffset, LocalToWorld);
@@ -435,7 +435,7 @@ float3 VertexFactoryGetWorldNormal(FVertexFactoryInput Input, FVertexFactoryInte
 float4 VertexFactoryGetTranslatedPrimitiveVolumeBounds(FVertexFactoryInterpolantsVSToPS Interpolants)
 {
 	FPrimitiveSceneData PrimitiveData = GetPrimitiveData(GetPrimitiveId(Interpolants));
-	return float4(LWCToFloat(LWCAdd(PrimitiveData.ObjectWorldPosition, ResolvedView.PreViewTranslation)), PrimitiveData.ObjectRadius);
+	return float4(DFFastToTranslatedWorld(PrimitiveData.ObjectWorldPosition, ResolvedView.PreViewTranslation), PrimitiveData.ObjectRadius);
 }
 
 uint VertexFactoryGetPrimitiveId(FVertexFactoryInterpolantsVSToPS Interpolants)

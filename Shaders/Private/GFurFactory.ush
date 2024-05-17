@@ -192,9 +192,9 @@ struct FVertexFactoryIntermediates
 	float3 InvNonUniformScale;
 	float DeterminantSign;
 
-	FLWCMatrix LocalToWorld;
-	FLWCInverseMatrix WorldToLocal;
-	FLWCMatrix PrevLocalToWorld;
+	FDFMatrix LocalToWorld;
+	FDFInverseMatrix WorldToLocal;
+	FDFMatrix PrevLocalToWorld;
 
 	// Blend Matrix (used for position/tangents)
 	FBoneMatrix BlendMatrix;
@@ -224,7 +224,7 @@ FMaterialVertexParameters GetMaterialVertexParameters(FVertexFactoryInput Input,
 	Result.WorldPosition = WorldPosition;
 	Result.SceneData = Intermediates.SceneData;
 	Result.VertexColor = Intermediates.Color;
-	Result.TangentToWorld = mul(TangentToLocal, LWCToFloat3x3(Intermediates.LocalToWorld));
+	Result.TangentToWorld = mul(TangentToLocal, DFToFloat3x3(Intermediates.LocalToWorld));
 	Result.PreSkinnedPosition = Intermediates.UnpackedPosition.xyz;
 	Result.PreSkinnedNormal = Input.TangentZ.xyz;
 
@@ -423,7 +423,7 @@ float3 SkinPreviousPosition( FVertexFactoryInput Input, FVertexFactoryIntermedia
 
 #if GFUR_PHYSICS
 
-	float3 WorldPosition = LWCToFloat(TransformLocalToWorld(Input.Position, Intermediates.LocalToWorld));
+	float3 WorldPosition = DFDemote(TransformLocalToWorld(Input.Position, Intermediates.LocalToWorld));
 	float FurLength = length(FurOffset);
 
 	float3 PhysicsOffset = Input.BlendWeights.x * CalcPrevBoneFurPhysicsOffset(Input.BlendIndices.x, WorldPosition);
@@ -450,7 +450,7 @@ float3 SkinPreviousPosition( FVertexFactoryInput Input, FVertexFactoryIntermedia
 	if (PhysicOffsetLength > MaxPhysicsOffset)
 		PhysicsOffset *= MaxPhysicsOffset / PhysicOffsetLength;
 
-	PhysicsOffset = LWCMultiplyVector(PhysicsOffset, Intermediates.WorldToLocal);
+	PhysicsOffset = DFMultiplyVector(PhysicsOffset, Intermediates.WorldToLocal);
 	Position += normalize(FurOffset + PhysicsOffset) * FurLength;
 
 #else // GFUR_PHYSICS
@@ -605,7 +605,7 @@ float4 CalcWorldPosition(FVertexFactoryInput Input, FVertexFactoryIntermediates 
 
 #if GFUR_PHYSICS
 
-	float3 WorldPosition = LWCToFloat(TransformLocalToWorld(Input.Position, Intermediates.LocalToWorld));
+	float3 WorldPosition = DFDemote(TransformLocalToWorld(Input.Position, Intermediates.LocalToWorld));
 	float FurLength = length(FurOffset);
 
 	float3 PhysicsOffset = Input.BlendWeights.x * CalcBoneFurPhysicsOffset(Input.BlendIndices.x, WorldPosition);
@@ -632,7 +632,7 @@ float4 CalcWorldPosition(FVertexFactoryInput Input, FVertexFactoryIntermediates 
 	if (PhysicOffsetLength > MaxPhysicsOffset)
 		PhysicsOffset *= MaxPhysicsOffset / PhysicOffsetLength;
 
-	PhysicsOffset = LWCMultiplyVector(PhysicsOffset, Intermediates.WorldToLocal);
+	PhysicsOffset = DFMultiplyVector(PhysicsOffset, Intermediates.WorldToLocal);
 	Position += normalize(FurOffset + PhysicsOffset) * FurLength;
 	
 #else // GFUR_PHYSICS
@@ -674,7 +674,7 @@ float3 VertexFactoryGetPositionForVertexLighting(FVertexFactoryInput Input, FVer
 
 void CalcTangentToWorld(FVertexFactoryInput Input, FVertexFactoryIntermediates Intermediates, out float3 TangentToWorld0, out float4 TangentToWorld2)
 {
-	float3x3 LocalToWorld = LWCToFloat3x3(Intermediates.LocalToWorld);
+	float3x3 LocalToWorld = DFToFloat3x3(Intermediates.LocalToWorld);
 
 	// Remove scaling.
 	half3 InvScale = Intermediates.InvNonUniformScale;
