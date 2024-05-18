@@ -16,6 +16,7 @@
 #include "Widgets/Input/SComboBox.h"
 #include "Editor/MainFrame/Public/Interfaces/IMainFrameModule.h"
 #include "Widgets/Input/SNumericEntryBox.h"
+#include "Widgets/Layout/SUniformGridPanel.h"
 
 #if PLATFORM_WINDOWS
 #include "Windows/AllowWindowsPlatformTypes.h"
