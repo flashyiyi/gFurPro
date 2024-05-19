@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Runtime/Engine/Classes/Engine/SkeletalMesh.h"
+#include "GPUSkinPublicDefs.h"
 #include "FurData.h"
 
 
