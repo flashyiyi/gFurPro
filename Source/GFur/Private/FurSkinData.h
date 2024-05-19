@@ -6,9 +6,6 @@
 #include "FurData.h"
 
 
-BEGIN_GLOBAL_SHADER_PARAMETER_STRUCT(FBoneMatricesUniformShaderParameters, )
-END_GLOBAL_SHADER_PARAMETER_STRUCT()
-
 /** Soft Skin Vertex */
 template<EStaticMeshVertexTangentBasisType TangentBasisTypeT, EStaticMeshVertexUVType UVTypeT, bool bExtraBoneInfluencesT>
 struct FFurSkinVertex : FFurStaticVertex<TangentBasisTypeT, UVTypeT>
