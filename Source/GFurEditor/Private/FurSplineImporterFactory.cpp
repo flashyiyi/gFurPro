@@ -294,6 +294,7 @@ bool UFurSplineImporterFactory::ImportSplines(FbxScene* Scene, UFurSplines* Spli
 			return false;
 		}
 	}
+	Splines->UpdateSplines();
 	return true;
 }
 
