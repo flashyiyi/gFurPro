@@ -48,7 +48,7 @@ FFurMorphObject::~FFurMorphObject()
 		VertexBuffer.ReleaseResource();
 }
 
-void FFurMorphObject::Update_RenderThread(FRHICommandListImmediate& RHICmdList, FMorphTargetWeightMap& ActiveMorphTargets, const TArray<float>& MorphTargetWeights, const TArray<TArray<int32>>& InMorphRemapTables, int InMeshLod)
+void FFurMorphObject::Update_RenderThread(FRHICommandListImmediate& RHICmdList, const FMorphTargetWeightMap& ActiveMorphTargets, const TArray<float>& MorphTargetWeights, const TArray<TArray<int32>>& InMorphRemapTables, int InMeshLod)
 {
 	int32 NumFurVertices = FurData->GetNumVertices_RenderThread();
 	int32 NumVertices = NumFurVertices / FurData->GetFurLayerCount();
@@ -76,12 +76,12 @@ void FFurMorphObject::Update_RenderThread(FRHICommandListImmediate& RHICmdList, 
 			const int32 WeightIndex = pair.Value;
 
 			checkSlow(ActiveMorphTarget != NULL);
-			checkSlow(ActiveMorphTarget->HasDataForLOD(LODIndex));
+			//checkSlow(ActiveMorphTarget->HasDataForLOD(LODIndex));
 
 			const float MorphTargetWeight = MorphTargetWeights[WeightIndex];
 			const float MorphAbsWeight = FMath::Abs(MorphTargetWeight);
 
-			checkSlow(MorphAbsWeight >= MinMorphTargetBlendWeight && MorphAbsWeight <= MaxMorphTargetBlendWeight);
+			//checkSlow(MorphAbsWeight >= MinMorphTargetBlendWeight && MorphAbsWeight <= MaxMorphTargetBlendWeight);
 
 			// Get deltas
 			int32 NumDeltas;

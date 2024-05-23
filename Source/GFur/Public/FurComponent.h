@@ -265,7 +265,7 @@ private:
 	// Begin USceneComponent interface.
 
 	void updateFur();
-	void UpdateFur_RenderThread(FRHICommandListImmediate& RHICmdList, bool Discontinuous);
+	void UpdateFur_RenderThread(FRHICommandListImmediate& RHICmdList, bool Discontinuous, const FMorphTargetWeightMap & ActiveMorphTargets, const TArray<float> & MorphTargetWeights);
 	void UpdateMasterBoneMap();
 	void CreateMorphRemapTable(int32 InLod);
 };

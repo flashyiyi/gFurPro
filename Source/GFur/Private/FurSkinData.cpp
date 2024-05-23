@@ -623,12 +623,17 @@ BEGIN_GLOBAL_SHADER_PARAMETER_STRUCT(FBoneMatricesUniformShaderParameters, )
 	SHADER_PARAMETER_ARRAY(FMatrix3x4, BoneMatrices, [MAX_GPU_BONE_MATRICES_UNIFORMBUFFER])
 END_GLOBAL_SHADER_PARAMETER_STRUCT()
 
-#endif
-// End of fix from gloriousayu
+IMPLEMENT_GLOBAL_SHADER_PARAMETER_STRUCT(FBoneMatricesUniformShaderParameters, "BonesFur");
+
+#else
 
 #if WITH_EDITORONLY_DATA
 IMPLEMENT_GLOBAL_SHADER_PARAMETER_STRUCT(FBoneMatricesUniformShaderParameters, "BonesFur");
 #endif // WITH_EDITORONLY_DATA
+
+#endif
+// End of fix from gloriousayu
+
 
 static FBoneMatricesUniformShaderParameters GBoneUniformStruct;
 

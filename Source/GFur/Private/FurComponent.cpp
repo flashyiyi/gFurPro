@@ -1081,15 +1081,17 @@ void UGFurComponent::updateFur()
 	LastRevisionNumber = RevisionNumber;
 
 	// queue a call to update this data
+	FMorphTargetWeightMap ActiveMorphTargets = MasterPoseComponent->ActiveMorphTargets;
+	TArray<float> MorphTargetWeights = MasterPoseComponent->MorphTargetWeights;
 	ENQUEUE_RENDER_COMMAND(SkelMeshObjectUpdateDataCommand)(
-		[this, Discontinuous](FRHICommandListImmediate& RHICmdList)
+		[this, Discontinuous, ActiveMorphTargets, MorphTargetWeights](FRHICommandListImmediate& RHICmdList)
 	{
-		UpdateFur_RenderThread(RHICmdList, Discontinuous);
+		UpdateFur_RenderThread(RHICmdList, Discontinuous, ActiveMorphTargets, MorphTargetWeights);
 	}
 	);
 }
 
-void UGFurComponent::UpdateFur_RenderThread(FRHICommandListImmediate& RHICmdList, bool Discontinuous)
+void UGFurComponent::UpdateFur_RenderThread(FRHICommandListImmediate& RHICmdList, bool Discontinuous, const FMorphTargetWeightMap& ActiveMorphTargets, const TArray<float>& MorphTargetWeights)
 {
 	FFurSceneProxy* FurProxy = (FFurSceneProxy*)SceneProxy;
 
@@ -1111,7 +1113,7 @@ void UGFurComponent::UpdateFur_RenderThread(FRHICommandListImmediate& RHICmdList
 			{
 				int32 FurLodLevel = FurProxy->GetCurrentFurLodLevel();
 				if (FurLodLevel == 0 || !LODs[FurLodLevel - 1].DisableMorphTargets){}
-					FurProxy->GetMorphObject(true)->Update_RenderThread(RHICmdList, MasterPoseComponent->ActiveMorphTargets, MasterPoseComponent->MorphTargetWeights, MorphRemapTables, FurProxy->GetCurrentMeshLodLevel());
+					FurProxy->GetMorphObject(true)->Update_RenderThread(RHICmdList, ActiveMorphTargets, MorphTargetWeights, MorphRemapTables, FurProxy->GetCurrentMeshLodLevel());
 			}
 		}
 		else if (StaticGrowMesh)
