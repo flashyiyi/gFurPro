@@ -217,7 +217,7 @@ FbxScene* UFurSplineImporterFactory::ImportFbxScene(FbxManager* SdkManager, cons
 	check(Scene);
 
 	FbxImporter* importer = FbxImporter::Create(SdkManager, "");
-	if (!importer->Initialize(TCHAR_TO_ANSI(*Filename), -1, SdkManager->GetIOSettings()))
+	if (!importer->Initialize(TCHAR_TO_UTF8(*Filename), -1, SdkManager->GetIOSettings()))
 		return NULL;
 
 	if (!importer->Import(Scene))
