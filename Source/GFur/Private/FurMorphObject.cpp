@@ -48,7 +48,7 @@ FFurMorphObject::~FFurMorphObject()
 		VertexBuffer.ReleaseResource();
 }
 
-void FFurMorphObject::Update_RenderThread(FRHICommandListImmediate& RHICmdList, FMorphTargetWeightMap& ActiveMorphTargets, const TArray<float>& MorphTargetWeights, const TArray<TArray<int32>>& InMorphRemapTables, int InMeshLod)
+void FFurMorphObject::Update_RenderThread(FRHICommandListImmediate& RHICmdList, const FMorphTargetWeightMap& ActiveMorphTargets, const TArray<float>& MorphTargetWeights, const TArray<TArray<int32>>& InMorphRemapTables, int InMeshLod)
 {
 	int32 NumFurVertices = FurData->GetNumVertices_RenderThread();
 	int32 NumVertices = NumFurVertices / FurData->GetFurLayerCount();
