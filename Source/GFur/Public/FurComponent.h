@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Runtime/Engine/Classes/Components/MeshComponent.h"
+#include "Runtime/Engine/Classes/Components/SkinnedMeshComponent.h"
 #include "FurComponent.generated.h"
 
 USTRUCT(BlueprintType)
