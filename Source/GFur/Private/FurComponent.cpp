@@ -1081,8 +1081,13 @@ void UGFurComponent::updateFur()
 	LastRevisionNumber = RevisionNumber;
 
 	// queue a call to update this data
-	FMorphTargetWeightMap ActiveMorphTargets = MasterPoseComponent->ActiveMorphTargets;
-	TArray<float> MorphTargetWeights = MasterPoseComponent->MorphTargetWeights;
+	FMorphTargetWeightMap ActiveMorphTargets;
+	TArray<float> MorphTargetWeights;
+	if (!DisableMorphTargets && MasterPoseComponent.IsValid())
+	{
+		ActiveMorphTargets = MasterPoseComponent->ActiveMorphTargets;
+		MorphTargetWeights = MasterPoseComponent->MorphTargetWeights;
+	}
 	ENQUEUE_RENDER_COMMAND(SkelMeshObjectUpdateDataCommand)(
 		[this, Discontinuous, ActiveMorphTargets, MorphTargetWeights](FRHICommandListImmediate& RHICmdList)
 	{
