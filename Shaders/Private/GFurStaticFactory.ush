@@ -130,7 +130,7 @@ FMaterialVertexParameters GetMaterialVertexParameters(FVertexFactoryInput Input,
 		Result.TexCoords[CoordinateIndex] = Input.TexCoords[CoordinateIndex].xy;
 	}
 #endif	// NUM_MATERIAL_TEXCOORDS_VERTEX
-
+	Result.LWCData = MakeMaterialLWCData(Result);
 	return Result;
 }
 
